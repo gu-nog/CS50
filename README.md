@@ -11,6 +11,7 @@ Tabela de conteúdos
 <!--ts-->
    * [Aula 1(Scratch)](#aula-1---scratch)
        * [Meu projeto](#meu-projeto-da-aula-1---scratch)
+   * [Aula 2(C)](#aula-2---linguagem-c)
    * [Ferramentas](#tecnologias)
    * [Licença CC](https://cs50.harvard.edu/x/2022/license/)
 <!--te-->
@@ -78,8 +79,35 @@ Por exemplo, a categoria de eventos, que representa qualquer interação com o d
     - seta para baixo: desce seu personagem
 - Começar o jogo/rodar o projeto: clique na bandeira verde
 - Tecnologia usada: Scratch
+# Aula 2 - linguagem C
+#### Tempo gasto até agora: 1h15m
+### C:
+- É uma linguagem mais baseada em texto e menos visual, diferente do Scratch
+- É bem antiga e precede algumas linguagens mais modernas, como python
+### OBS: Nessa aula, exploraremos alguns tópicos, como variáveis, que já vimos no Scratch, mas traduzindo elas para uma nova sintaxe(mais simples que a de línguas humanas, por ter menos vocabulário). E no início focaremos só no mais importante, deixando detalhes para depois.
+### Como avaliar se seu código é bom:
+- Ele precisa estar corretamente escrito e funcionar corretamente
+- Bom design: seu códgio precisa ser bem estruturado e visualmente agradável para ser facilmente entendido e ser fácil verificar se está correto
+- Estilo: você precisa pegar o hábito de escrevê-los com o estilo que códgios devem ser escritos, assim como temos letra maiúscula no início de frases, etc.
+### Como, em códigos, coisas gráficas, como formatação de letras... não importam, não os escrevemos, por exemplo no word, mas em IDEs(Integrated Development Environments)/editores de texto(como o vscode que pode até ser usado na web, como o professor usará no início). E o arquivo do códgio tem a extensão de acordo com sua linguagem(ex: .c)
+### Partes principais do vscode:
+- CLI(command line interface): na parte inferior, para interagir por comando/texto com o pc, sendo o bash, o terminal do linux
+- GUI: o resto, que são as interfaces gráficas.
+### Então, para rodá-los, precisamos convertê-los para binário, e o código que faz isso chama-se compilador.
+### Compilar pelo terminal/CLI:
+- 1o comando: ```make nomearquivocomcódigo``` > compila o código e gera um executável com o mesmo nome
+- 2o comando: ```./nomearquivocomcódigo``` > executa o executável gerado no mesmo diretório base que estamos
+### Funções e argumentos: mesma ideia que no Scratch
+- ex: ```printf("Hello");```, onde: 'printf' é a função que escreve coisas, entre parenteses são os argumentos, '"' indica que é uma string/um texto e o ';' é obrigatório em C
+### O output de um algorítimo geralmente é:
+- Um 'side effect'/algo que apareça na tela, etc
+- Um valor retornado, ex: função get_string() de C
+### OBS: esse valor retornado geralmente é atribuído a uma variável, com o padrão: ```tipovar nomevar = função()```
+### Definir uma varíavel: tipo nome > o tipo pode ser uma string(texto), int(número inteiro)...
 # Tecnologias
 
 As seguintes ferramentas foram usadas na construção dos projetos:
 
 - [Scratch](https://scratch.mit.edu/)
+- [Linguagem C](https://docs.microsoft.com/pt-br/cpp/c-language/?view=msvc-170)
+- [IDE VS Code](https://code.visualstudio.com/)
