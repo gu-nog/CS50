@@ -1,0 +1,11 @@
+sort1 uses: Bubble Sort
+
+How do you know?: Because of the possible optimization is fast in the sorted, but it doesn't occur in reversed
+
+sort2 uses: Merge Sort
+
+How do you know?: Was faster on the both best and worst case
+
+sort3 uses: Selection Sort
+
+How do you know?: as we can't use any optimization, is bad in the both best and worst case
