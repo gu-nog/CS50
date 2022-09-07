@@ -1,6 +1,14 @@
-#include "helpers.h"
+// #include "helpers.h"
 #include "stdio.h"
 #include "math.h"
+#include "stdint.h"
+
+typedef struct {
+    uint8_t rgbtBlue;
+    uint8_t rgbtGreen;
+    uint8_t rgbtRed;
+}
+RGBTRIPLE;
 
 int min_value(int a, int b)
 {
