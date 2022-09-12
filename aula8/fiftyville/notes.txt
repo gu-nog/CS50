@@ -1,0 +1,94 @@
+Notes in portuguese:
+
+Theft of the CS50 duck took place at 10:15am at the Humphrey Street bakery. Interviews were conducted today with three witnesses who were present at the time – each of their interview transcripts mentions the bakery.
+
+SELECT * FROM people WHERE phone_number='(676) 555-6554';
+250277|James|(676) 555-6554|2438825627|Q13SVG6
+
+Sometime within ten minutes of the theft, I saw the thief get into a car in the bakery parking lot and drive away. If you have security footage from the bakery parking lot, you might want to look for cars that left the parking lot in that time frame.|Ruth
+I don't know the thief's name, but it was someone I recognized. Earlier this morning, before I arrived at Emma's bakery, I was walking by the ATM on Leggett Street and saw the thief there withdrawing some money.|Eugene
+As the thief was leaving the bakery, they called someone who talked to them for less than a minute. In the call, I heard the thief say that they were planning to take the earliest flight out of Fiftyville tomorrow. The thief then asked the person on the other end of the phone to purchase the flight ticket.|Raymond
+
+SELECT * FROM bakery_security_logs WHERE day=28 AND montSELECT * FROM airports where id IN (SELECT destination_airport_id FROM people, passengers, flights WHERE people.name = 'Taylor' AND passengers.passport_number=people.passport_number AND flights.month=7 AND flights.day=29);
+1|ORD|O'Hare International Airport|Chicago
+4|LGA|LaGuardia Airport|New York City
+6|BOS|Logan International Airport|Boston_id FROM people, passengers, flights WHERE people.name = 'Taylor' AND passengers.passport_number=people.passport_number AND flights.month=7 AND flights.day=29);
+9|HND|Tokyo International Airport|Tokyo
+11|SFO|San Francisco International Airport|San Francisco
+
+SELECT receiver FROM phone_calls WHERE caller = '(286) 555-6063' AND day=28 AND month=7 AND duration < 60;
+(676) 555-6554
+
+Ligou:
+
+SELECT * FROM people WHERE phone_number IN (SELECT caller FROM phone_calls WHERE day=28 AND month=7 AND duration < 60);
+395717|Kenny|(826) 555-1652|9878712108|30G67EN
+398010|Sofia|(130) 555-0289|1695452385|G412CB7
+438727|Benista|(338) 555-6650|9586786673|8X428L0
+449774|Taylor|(286) 555-6063|1988161715|1106N58
+514354|Diana|(770) 555-1861|3592750733|322W7JE
+560886|Kelsey|(499) 555-9472|8294398571|0NTHK55
+686048|Bruce|(367) 555-5533|5773159633|94KL13X
+907148|Carina|(031) 555-6622|9628244268|Q12B3Z3
+
+Sacou e ligou
+
+SELECT * FROM atm_transactions, bank_accounts, people WHERE bank_accounts.account_number=atm_transactions.account_number AND people.id=bank_accounts.person_id AND atm_transactions.day=28 AND atm_transactions.month=7 AND atm_transactions.transaction_type='withdraw' AND atm_transactions.atm_location='Leggett Street' AND people.name IN (SELECT people.name FROM people WHERE phone_number IN (SELECT caller FROM phone_calls WHERE day=28 AND month=7 AND duration < 60));
+
+686048|Bruce|(367) 555-5533|5773159633|94KL13X
+514354|Diana|(770) 555-1861|3592750733|322W7JE
+395717|Kenny|(826) 555-1652|9878712108|30G67EN
+449774|Taylor|(286) 555-6063|1988161715|1106N58
+438727|Benista|(338) 555-6650|9586786673|8X428L0
+
+Saiu na hora:
+SELECT * FROM bakery_security_logs WHERE day=28 AND month=7 AND hour=10 AND minute > 30;
+268|2021|7|28|10|35|exit|1106N58
+269|2021|7|28|10|42|entrance|NRYN856
+270|2021|7|28|10|44|entrance|WD5M8I6
+271|2021|7|28|10|55|entrance|V47T75I
+
+SELECT * FROM airports where id IN (SELECT destination_airport_id FROM people, passengers, flights WHERE people.name = 'Taylor' AND passengers.passport_number=people.passport_number AND flights.month=7 AND flights.day=29);
+1|ORD|O'Hare International Airport|Chicago
+4|LGA|LaGuardia Airport|New York City
+6|BOS|Logan International Airport|Boston
+9|HND|Tokyo International Airport|Tokyo
+11|SFO|San Francisco International Airport|San Francisco
+
+Sacou no dia lá:
+
+SELECT people.* FROM atm_transactions, bank_accounts, people WHERE bank_accounts.account_number=atm_transactions.account_number AND people.id=bank_accounts.person_id AND atm_transactions.day=28 AND atm_transactions.month=7 AND atm_transactions.transaction_type='withdraw' AND atm_transactions.atm_location='Leggett Street';
+686048|Bruce|(367) 555-5533|5773159633|94KL13X
+514354|Diana|(770) 555-1861|3592750733|322W7JE
+458378|Brooke|(122) 555-4581|4408372428|QX4YZN3
+395717|Kenny|(826) 555-1652|9878712108|30G67EN
+396669|Iman|(829) 555-5269|7049073643|L93JTIZ
+467400|Luca|(389) 555-5198|8496433585|4328GD8
+449774|Taylor|(286) 555-6063|1988161715|1106N58
+438727|Benista|(338) 555-6650|9586786673|8X428L0
+
+SELECT passengers.passport_number FROM passengers, flights WHERE flights.month=7 AND flights.day=29 AND passengers.passport_number in
+
+Reanalyzing:
+SELECT * FROM bakery_security_logs WHERE day=28 AND month=7 AND hour=10 AND minute > 15 and minute < 25 AND license_plate IN (SELECT people.license_plate FROM atm_transactions, bank_accounts, people WHERE bank_accounts.account_number=atm_transactions.account_number AND people.id=bank_accounts.person_id AND atm_transactions.day=28 AND atm_transactions.month=7 AND atm_transactions.transaction_type='withdraw' AND atm_transactions.atm_location='Leggett Street' AND people.name IN (SELECT people.name FROM people WHERE phone_number IN (SELECT caller FROM phone_calls WHERE day=28 AND month=7 AND duration < 60)));
+261|2021|7|28|10|18|exit|94KL13X
+266|2021|7|28|10|23|exit|322W7JE
+
+Bruce or diana
+
+SELECT * FROM airports where id IN (SELECT destination_airport_id FROM people, passengers, flights WHERE people.name = 'Bruce' AND passengers.passport_number=people.passport_number AND flights.month=7 AND flights.day=29);
+SELECT * FROM airports where id IN (SELECT destination_airport_id FROM people, passengers, flights WHERE people.name = 'Diana' AND passengers.passport_number=people.passport_number AND flights.month=7 AND flights.day=29);
+
+
+First flight(the one to NY):
+SELECT * FROM flights WHERE flights.month=7 AND flights.day=29 ORDER BY flights.hour, flights.minute;
+People in it:
+SELECT * FROM passengers JOIN people ON people.passport_number = passengers.passport_number WHERE flight_id = 36;
+
+only Bruce
+
+The call from Bruce:
+SELECT * FROM phone_calls WHERE caller = '(367) 555-5533' AND day=28 AND month=7 AND duration < 60;
+
+The other guy: Robin
+SELECT * FROM people WHERE phone_number='(375) 555-8161';
