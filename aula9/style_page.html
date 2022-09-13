@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script>
+        function save_username()
+        {
+            let name = document.querySelector('input[name="username"]'); // as css selectors; give the node from DOM
+            alert("Hello, " + name.value); // .value is because of the attribute value="inputted value"
+            let body = document.querySelector('body');
+            body.style.backgroundColor = 'grey'; // '-' just converts to capital letter to avoid subtractio, and we can access style property
+        }
+        // document.querySelector('form').addEventListener('submit', save_username); There are many events as drag....
+        // anonymous function: function() {}
+        // for the anonymous function in this case: function(e) {e.preventDefault()} to don't handle the form, where e is the event
+    </script>
+    <title>Semantic and beautiful</title>
+</head>
+<body style="text-align: center;"> <!-- The style attribute goes to all childrens-->
+    <header> <!-- Semantic tag-->
+        <h1 class="big">
+            Gustavo's Page
+        </h1>
+    </header>
+    <main>
+        <h1 class="big">
+            Welcome!
+        </h1>
+        <p class="normal-text">
+            My name is Gustavo! I'm learning computer science with CS50 course.
+        </p>
+        <ul class="list">
+            <li>
+                Contact me
+            </li>
+            <li>
+                My projects
+            </li>
+            <li>
+                What I enjoy
+            </li>
+        </ul>
+        <form onsubmit="save_username(); return false;"> <!--In this case, false won't permit the browser to do some other stuff-->
+            <input type="text" name="username" placeholder="username" autocomplete="off" autofocus>
+            <input type="submit">
+        </form>
+    </main>
+    <footer id="creator">
+        Made by <a href="github.com/gu-nog">Gustavo</a> :)
+    </footer>
+</body>
+</html>

@@ -1,0 +1,38 @@
+html /*tag type selector*/
+{
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
+
+.big
+{
+    font-size: 32px;
+}
+
+.normal-text
+{
+    color: #3e3e3e;
+    text-align: left;
+    padding-left: 20px;
+}
+
+.list
+{
+    list-style: none;
+}
+
+.list li:hover /*pseudo-class*/
+{
+    text-decoration: underline;
+    text-decoration-color: blueviolet;
+}
+
+#creator a[href*="gu-nog"] /*attribute selector*/
+{
+    text-decoration: none;
+}
+
+#creator
+{
+    font-size: medium;
+    color: grey;
+}
