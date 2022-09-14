@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap" rel="stylesheet">
+        <link href="styles.css" rel="stylesheet">
+        <title>Trivia!</title>
+        <script>
+            window.onload = init;
+
+            function init(){
+                // TODO: Add code to check answers to questions
+                // First logic:
+                let buttons = ["inf", '1bi', '100', '33.', '314'];
+                for (let button = 0; button < 5; button++)
+                {
+                    let button_id = '#'+ buttons[button];
+                    let selected_button = document.getElementById(buttons[button]);
+                    selected_button.addEventListener('click', function() {
+                        let feedback = document.getElementById('first-feedback-correct');
+                        if (buttons[button] == '314')
+                        {
+                            feedback.classList.add('show');
+                        }
+                        else if (!feedback.classList.contains('show'))
+                        {
+                            feedback = document.getElementById('first-feedback-wrong');
+                            feedback.classList.add('show');
+                            setTimeout(function() {
+                                feedback.classList.remove('show');
+                            }, 4000);
+                        }
+                    });
+                }
+                // Second:
+                let form = document.querySelector('form');
+                form.addEventListener('submit', function(e) {
+                    let feedback = document.getElementById('sec-feedback-correct');
+                    let input = document.getElementById('second-response');
+                    if (input.value == 'CS50')
+                    {
+                        feedback.classList.add('show');
+                    }
+                    else if (!feedback.classList.contains('show'))
+                    {
+                        feedback = document.getElementById('sec-feedback-wrong');
+                            feedback.classList.add('show');
+                            setTimeout(function() {
+                                feedback.classList.remove('show');
+                        }, 4000);
+                    }
+                    e.preventDefault();
+                });
+            }
+        </script>
+    </head>
+    <body>
+        <div class="header">
+            <h1>Trivia!</h1>
+        </div>
+
+        <div class="container">
+            <div class="section">
+                <h2>Part 1: Multiple Choice </h2>
+                <hr>
+                <!-- TODO: Add multiple choice question here h3 with buttons; text red and Incorrect after the question or green and Correct!-->
+                <h3 id="first">
+                    How many pi number is?
+                </h3>
+                <div id="first-feedback-correct" class="hire">
+                    <span>
+                        Correct!
+                    </span>
+                </div>
+                <div id="first-feedback-wrong" class="hire">
+                    <span>
+                        Incorrect
+                    </span>
+                </div>
+                <ul>
+                    <li>
+                        <button id="inf">
+                            Infinty
+                        </button>
+                    </li>
+                    <li>
+                        <button id="1bi">
+                            1 billion
+                        </button>
+                    </li>
+                    <li>
+                        <button id="100">
+                            100
+                        </button>
+                    </li>
+                    <li>
+                        <button id="33.">
+                            33.333...
+                        </button>
+                    </li>
+                    <li>
+                        <button id="314">
+                            3,14...
+                        </button>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="section">
+                <h2>Part 2: Free Response</h2>
+                <hr>
+                <!-- TODO: Add free response question here h3, input and button-->
+                <h3>
+                    What is the best free course of computer science?
+                </h3>
+                <div id="sec-feedback-correct" class="hire">
+                    <span>
+                        Correct!
+                    </span>
+                </div>
+                <div id="sec-feedback-wrong" class="hire">
+                    <span>
+                        Incorrect
+                    </span>
+                </div>
+                <form>
+                    <input type="text" id="second-response" autofocus>
+                    <input type="submit" value="Check answer">
+                </form>
+            </div>
+        </div>
+    </body>
+</html>
