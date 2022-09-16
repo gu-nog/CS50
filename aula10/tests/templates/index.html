@@ -1,0 +1,27 @@
+{% extends "layout.html" %}
+
+{% block body %}
+
+    <h1>
+        Hello! <!--{{name}} is a query parameter that we got in app.py and passed in render_template-->
+    </h1>
+    <form method="get" action="/inputted">
+        <input type="text" placeholder="name..." autocomplete="off" name="name">
+        <input type="submit">
+    </form>
+    <h1>
+        Register
+    </h1>
+    <form action="/signup" method="post">
+        <input type="email" name="email">
+        <input type="text" name="pass">
+        <select name="country">
+            <option value="empty" disabled selected>-country-</option>
+            {% for country in countries %}
+                <option>{{country}}</option> <!--if haven't value, it passes the option-->
+            {% endfor %}
+        </select>
+        <input type="submit">
+    </form>
+
+{% endblock %}
