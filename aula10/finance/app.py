@@ -127,6 +127,16 @@ def history():
         return apology('We are having problems on our servers, please comeback later :)', '500')
     return render_template("history.html", transactions=all_transactions)
 
+@app.route('/delete')
+@login_required
+def delete():
+    """Delete user account"""
+    user = session['user_id']
+    db.execute("DELETE FROM history WHERE user_id = ?", user)
+    db.execute("DELETE FROM portifolio WHERE user_id = ?", user)
+    db.execute("DELETE FROM users WHERE id = ?", user)
+    session.clear()
+    return redirect('/')
 
 @app.route("/login", methods=["GET", "POST"])
 def login():

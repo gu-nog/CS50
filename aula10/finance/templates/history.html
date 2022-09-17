@@ -19,14 +19,25 @@
         </thead>
         <tbody>
             {% for transaction in transactions %}
-                <tr>
-                    <td>{{ transaction["date"] }}</td>
-                    <td>{{ transaction["type"] }}</td>
-                    <td>{{ transaction["symbol"] }}</td>
-                    <td>{{ transaction["shares"] }}</td>
-                    <td>{{ transaction["price"] }}</td>
-                    <td>{{ transaction["total"] }}</td>
-                </tr>
+                {% if transaction['type'] == 'buy' %}
+                    <tr class="table-success">
+                        <td>{{ transaction["date"] }}</td>
+                        <td>{{ transaction["type"] }}</td>
+                        <td>{{ transaction["symbol"] }}</td>
+                        <td>{{ transaction["shares"] }}</td>
+                        <td>{{ transaction["price"] }}</td>
+                        <td>{{ transaction["total"] }}</td>
+                    </tr>
+                {% else %}
+                    <tr class="table-danger">
+                        <td>{{ transaction["date"] }}</td>
+                        <td>{{ transaction["type"] }}</td>
+                        <td>{{ transaction["symbol"] }}</td>
+                        <td>{{ transaction["shares"] }}</td>
+                        <td>{{ transaction["price"] }}</td>
+                        <td>{{ transaction["total"] }}</td>
+                    </tr>
+                {% endif %}
             {% endfor %}
         </tbody>
     </table>
