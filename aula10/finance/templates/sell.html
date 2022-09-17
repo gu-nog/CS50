@@ -7,8 +7,13 @@
 {% block main %}
     <form action="/sell" method="post">
         <div class="mb-3">
-            <input autocomplete="off" autofocus class="form-control mx-auto w-auto" name="symbol" placeholder="Stock symbol" type="text">
-            <input autocomplete="off" class="form-control mx-auto w-auto" name="qty" placeholder="Quantity" type="number">
+            <select name="symbol" class="form-control mx-auto w-auto">
+                <option value="-symbol-" disabled selected>-symbol-</option>
+                {% for stock in portifolio %}
+                    <option value="{{stock}}">{{stock}}</option>
+                {% endfor %}
+            </select>
+            <input autocomplete="off" class="form-control mx-auto w-auto" name="shares" placeholder="Quantity" type="number">
         </div>
         <button class="btn btn-primary" type="submit">Sell now</button>
     </form>

@@ -43,7 +43,7 @@ def after_request(response):
 
 
 @app.route("/")
-@login_required # if no user_id redirect to /login
+@login_required  # if no user_id redirect to /login
 def index():
     """Show portfolio of stocks"""
     try:
@@ -70,13 +70,13 @@ def index():
 @login_required
 def buy():
     """Buy shares of stock"""
-    if request.method == 'GET': # form of stock symbol and quantity
+    if request.method == 'GET':  # form of stock symbol and quantity
         return render_template('buy.html')
-    else: # Buy it
+    else:  # Buy it
         # Verify - enough cash, positive quantity, valid stock
         stock = request.form.get('symbol')
         try:
-            qty = int(request.form.get('qty'))
+            qty = int(request.form.get('shares'))
         except:
             return apology('must provide valid quantity')
         if qty <= 0:
@@ -94,14 +94,14 @@ def buy():
         month = int(str(today)[5:7])
         day = int(str(today)[-2:])
         db.execute('INSERT INTO history (day, month, stock, qty, total_price, user_id) VALUES (?, ?, ?, ?, ?, ?)', 
-                day, month, stock, qty, qty * stock_info['price'], session['user_id'])
+                   day, month, stock, qty, qty * stock_info['price'], session['user_id'])
         before = db.execute('SELECT * FROM portifolio WHERE stock = ? AND user_id = ?', stock, session['user_id'])
         if len(before) > 0:
             before_qty = before[0]['qty']
             db.execute('UPDATE portifolio SET qty = ? WHERE user_id = ? AND stock = ?', before_qty + qty, session['user_id'], stock)
         else:
             db.execute('INSERT INTO portifolio (stock, qty, user_id) VALUES (?, ?, ?)', stock, qty, session['user_id'])
-        return redirect('/buy')
+        return redirect('/')
 
 
 @app.route("/history")
@@ -121,11 +121,13 @@ def history():
             else:
                 type = 'buy'
             all_transactions.append(
-                {"type": type, "date": f"{transaction['month']}/{transaction['day']}", "symbol": symbol, "shares": abs(qty), "price": usd(unit_price), 'total': usd(abs(total_price))}
+                {"type": type, "date": f"{transaction['month']}/{transaction['day']}", "symbol": symbol,
+                    "shares": abs(qty), "price": usd(unit_price), 'total': usd(abs(total_price))}
             )
     except:
         return apology('We are having problems on our servers, please comeback later :)', '500')
     return render_template("history.html", transactions=all_transactions)
+
 
 @app.route('/delete')
 @login_required
@@ -137,6 +139,7 @@ def delete():
     db.execute("DELETE FROM users WHERE id = ?", user)
     session.clear()
     return redirect('/')
+
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -205,6 +208,7 @@ def quote():
                 stock_info['price'] = usd(stock_info['price'])
                 return render_template('quoted.html', stockinfo=stock_info)
 
+
 @app.route("/register", methods=["GET", "POST"])
 def register():
     """Register user"""
@@ -214,10 +218,10 @@ def register():
 
     # POST
     else:
-    #   verify if ok(name used, pass don't match, no empth input field) > if not return apology
+        #   verify if ok(name used, pass don't match, no empth input field) > if not return apology
         name = request.form.get('username')
         password = request.form.get('password')
-        verifypassword = request.form.get('verifypassword')
+        verifypassword = request.form.get('confirmation')
         if password == '':
             return apology('must provide password')
         elif verifypassword == '':
@@ -229,7 +233,7 @@ def register():
         elif len(list(db.execute('SELECT * FROM users WHERE username = ?', name))) != 0:
             return apology('username already been used')
         else:
-        #   insert user and login
+            #   insert user and login
             db.execute('INSERT INTO users (username, hash) VALUES (?, ?)', name, generate_password_hash(password))
             rows = db.execute('SELECT * from users WHERE username = ?', name)
             session["user_id"] = rows[0]["id"]
@@ -240,19 +244,22 @@ def register():
 @login_required
 def sell():
     """Sell shares of stock"""
-    if request.method == 'GET': # form of stock symbol and quantity
-        return render_template('sell.html')
-    else: # Buy it
+    if request.method == 'GET':  # form of stock symbol and quantity
+        portifolio = db.execute('SELECT * FROM portifolio WHERE user_id = ?', session['user_id'])
+        portifolio_stocks = [stock['stock'] for stock in portifolio]
+        return render_template('sell.html', portifolio=portifolio_stocks)
+    else:  # Buy it
         # Verify - enough stocks, positive quantity, valid stock
         stock = request.form.get('symbol')
         try:
-            qty = int(request.form.get('qty'))
+            qty = int(request.form.get('shares'))
         except:
             return apology('must provide valid quantity')
         if qty <= 0:
             return apology('must sell 1+ stocks')
         stock_info = lookup(stock)
-        before_shares = int(db.execute('SELECT * FROM portifolio WHERE user_id = ? AND stock = ?', session['user_id'], stock)[0]['qty'])
+        before_shares = int(db.execute('SELECT * FROM portifolio WHERE user_id = ? AND stock = ?',
+                            session['user_id'], stock)[0]['qty'])
         if stock_info == None:
             return apology('must provide valid symbol')
         if before_shares < qty:
@@ -267,5 +274,5 @@ def sell():
         month = int(str(today)[5:7])
         day = int(str(today)[-2:])
         db.execute('INSERT INTO history (day, month, stock, qty, total_price, user_id) VALUES (?, ?, ?, ?, ?, ?)', 
-                day, month, stock, qty * -1, sold_value * -1, session['user_id'])
-        return redirect('/sell')
+                   day, month, stock, qty * -1, sold_value * -1, session['user_id'])
+        return redirect('/')

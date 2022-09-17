@@ -48,7 +48,7 @@ def lookup(symbol):
         return None
 
     # Parse response
-    try: # on error, return None too, else return dict with float price, name and symbol
+    try:  # on error, return None too, else return dict with float price, name and symbol
         quote = response.json()
         return {
             "name": quote["companyName"],
