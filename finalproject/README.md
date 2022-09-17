@@ -13,3 +13,7 @@ What will your software do? Will permit any user to share and log what he is lea
 - private or public profile;
 How will it be executed? via website in Flask
 What new skills will you need to acquire? save files on server, host my flask application online and other things I'll discover
+
+Activities:
+[x] - basic template and application structure
+[] - login and signup
