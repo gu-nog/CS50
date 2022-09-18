@@ -1,0 +1,11 @@
+button[type='submit'] {
+    margin-top: 20px;
+}
+
+form.account-form {
+    margin-top: 20%;
+}
+
+form.account-form .form-text {
+    color: red
+}

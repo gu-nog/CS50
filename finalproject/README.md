@@ -21,9 +21,25 @@ What new skills will you need to acquire? save files on server, host my flask ap
 # Explanations:
 ## basictemplate.html:
 Is my application default template implemented using jinja template pattern
+
 ## database.py:
 - run_query: run a query in skilllog.db using sqlite3 library and returns false on error or the query result; this function can receive a query with '?' placeholder and tuple as 'params', such as cs50 library
 - Why sqlite3: is a simple database that stay inside our application not on another server
+- signup: add user to users table
+- login: returns user id if exists with the same password or -1
+- emailused: return true if email is registered in database
+- nameused: return true if email is registered in database
 
 ## skilllog.db:
 - table users: columns id(int), name(str), email(str), password(saves as text/str the hash of the passwords) and private(bool if the user allows other people knowing his name to see his log)
+
+## login.html:
+- GET: returns a form page to login(email and password)
+- POST: verify email(with @, ., not empty and registered) and password(not empty and its hash matches with the one from the email user), if everything is correct on datas, start a session to user
+
+## signup.html:
+- GET: returns a form page to register(name, email, password, confirmation password and selector private or public)
+- POST: verify name is not empty, email is not empty and have @ and ., password have len between 4-20 chars, confirmation password must match and be providaded and selector must have a valid value, if everything is ok, add to database the new user
+
+## Styles.css:
+- some basic styles linked to basic template
