@@ -1,12 +1,28 @@
-from flask import Flask, render_template, request, redirect
-from database import emailused, nameused, run_query, adduser, verifyuser
+from flask import Flask, render_template, request, redirect, session
+from flask_session import Session
+from database import delete_user, emailused, nameused, adduser, verifyuser
 
 app = Flask(__name__)
+app.config["SESSION_PERMANENT"] = True
+app.config["SESSION_TYPE"] = "filesystem"
+Session(app)
 
+def authenticated():
+    if 'user_id' in session.keys():
+        return True
+    return False
 
 @app.route('/')
 def index():
-    return render_template('index.html', content="TODO")
+    if not authenticated():
+        return redirect('/login')
+    return render_template('index.html', content=session['user_id'])
+
+@app.route('/logout')
+def logout():
+    if authenticated():
+        session.clear()
+    return redirect('/login')
 
 @app.route('/login', methods=['POST', 'GET'])
 def login():
@@ -38,6 +54,7 @@ def login():
             if valid_data:
                 user_id = verifyuser(email, password)
                 if user_id != -1:
+                    session['user_id'] = user_id
                     return redirect('/')
                 else:
                     errors['email'] = 'wrong password/email'
@@ -95,6 +112,7 @@ def signup():
             valid_data = (errors == {'name': '', 'email': '', 'password': '', 'verifypassword': '', 'visibility': ''})
             if valid_data:
                 if adduser(name, email, password, visibility):
+                    session['user_id'] = verifyuser(email, password)
                     return redirect('/')
                 else:
                     return render_template('signup.html', errors=errors, servererror=True)
@@ -103,8 +121,17 @@ def signup():
     except:
         return render_template('signup.html', errors=errors, servererror=True)
 
+@app.route('/delete')
+def delete_account():
+    """finish session, delete all db info related to user and redirect to sign up page"""
+    if not authenticated():
+        return redirect('/login')
+    if delete_user(session['user_id']):
+        session.clear()
+        return redirect('/signup')
+    return redirect('/')
+
 if __name__ == '__main__':
     app.config['TEMPLATES_AUTO_RELOAD'] = True
     app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
     app.run(debug=True)
-

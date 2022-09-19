@@ -19,6 +19,13 @@ def run_query(query, params=[]):
             print('db error', err)
             return False
 
+def delete_user(id):
+    try:
+        run_query('DELETE FROM users WHERE id = ?', [id])
+        return True
+    except:
+        return False
+
 def adduser(name, email, password, visibility):
     """return true if sucessfully created the user, otherwise returns false"""
     try:

@@ -16,7 +16,8 @@ What new skills will you need to acquire? save files on server, host my flask ap
 
 ## Activities:
 [x] - basic template and application structure
-[] - login and signup
+[x] - login and signup
+[x] - sessions
 
 # Explanations:
 ## basictemplate.html:
