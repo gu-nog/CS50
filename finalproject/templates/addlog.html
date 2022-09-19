@@ -1,0 +1,109 @@
+{% extends 'basictemplate.html' %}
+{% block links %}
+    <script>
+        window.onload = function() {
+            const inputFile = document.querySelector("#image");
+            const pictureImage = document.querySelector(".img-input");
+            const pictureImageTxt = "Choose an image";
+            pictureImage.innerHTML = pictureImageTxt;
+
+            inputFile.addEventListener("change", function (e) {
+                const inputTarget = e.target;
+                const file = inputTarget.files[0];
+
+                if (file) {
+                    const reader = new FileReader();
+
+                    reader.addEventListener("load", function (e) {
+                        const readerTarget = e.target;
+
+                        const img = document.createElement("img");
+                        img.src = readerTarget.result;
+                        img.classList.add(".img-input");
+
+                        pictureImage.innerHTML = "";
+                        pictureImage.appendChild(img);
+                        });
+
+                        reader.readAsDataURL(file);
+                } else {
+                    pictureImage.innerHTML = pictureImageTxt;
+                }
+            });
+        };
+    </script>
+{% endblock %}
+{% block title %}
+    Add a log
+{% endblock %}
+{% block body %}
+    <h1 class="text-center">
+        Add Activity
+    </h1>
+    {% if server_error == True %}
+        <h2 class="text-center">
+            Server error :(
+        </h2>
+    {% endif %}
+    <div class="container vspace-5">
+        {% if added == True %}
+            <div role="alert" class="alert alert-success">
+                Activity added sucessfully!
+            </div>
+        {% endif %}
+        <form action="/log/add" method="post" class="form-with-error">
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="title">Title</label>
+                    <input type="text" name="title" id="title" autofocus autocomplete="off" autocapitalize="words" placeholder="Activity title" class="form-control">
+                    <div class="form-text">{{ errors['title'] }}</div>
+                </div>
+                <div class="form-group col-md-3">
+                    <label for="type">Type</label>
+                    <select class="form-control" name="type" id="type">
+                        <option selected disabled value="--type--">
+                            --type--
+                        </option>
+                        <option value="course">Course</option>
+                        <option value="book">Book</option>
+                        <option value="contest">Contest</option>
+                        <option value="project">Project</option>
+                    </select>
+                    <div class="form-text">{{ errors['activity_type'] }}</div>
+                </div>
+                <div class="form-group col-md-3">
+                    <label for="visibility">Visibility</label>
+                    <select name="visibility" class="form-control">
+                        <option value="private">
+                            private activity
+                        </option>
+                        <option value="public">
+                            public activity
+                        </option>
+                    </select>
+                    <div class="form-text">{{ errors['visibility'] }}</div>
+                </div>
+            </div>
+            <div class="form-group col-md-12">
+                <label for="date">Date</label>
+                <input name="date" id="date" placeholder="Date" class="form-control" type="date"></input>
+                <div class="form-text">{{ errors['date'] }}</div>
+            </div>
+            <div class="form-group col-md-12">
+                <label for="description">Description</label>
+                <textarea name="description" id="description" rows="5" autocomplete="off" placeholder="Description" class="form-control"></textarea>
+                <div class="form-text">{{ errors['description'] }}</div>
+            </div>
+            <div class="form-group col-md-12">
+                <label for="notes">Notes</label>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="public" id="publicnotes" name="publicnotes" />
+                    <label class="form-check-label" for="publicnotes">Public notes</label>
+                </div>
+                <textarea name="notes" id="notes" rows="10" autocomplete="off" placeholder="Notes" class="form-control"></textarea>
+                <div class="form-text">{{ errors['notes'] }}</div>
+            </div>
+            <input type="submit" class="btn btn-primary">
+        </form>
+    </div>
+{% endblock %}

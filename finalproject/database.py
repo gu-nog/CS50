@@ -1,5 +1,6 @@
 from shutil import ExecError
 import sqlite3
+from sre_constants import SUCCESS
 import bcrypt
 
 def run_query(query, params=[]):
@@ -60,3 +61,16 @@ def emailused(email):
         return len(search) != 0
     except:
         return True
+
+def add_activity(title, activity_type, visibility, description, notes, publicnotes, 
+                             year, month, day, user_id):
+    """True if successfully add or false if occurred an error"""
+    try:
+        sucess = run_query('INSERT INTO activities (title, type, private, description, notes, private_notes, '+
+        'year, month, day, user_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', [title, activity_type, visibility == 'private', 
+        description, notes, publicnotes == False, year, month, day, user_id])
+        if sucess == False:
+            return False
+        return True
+    except:
+        return False

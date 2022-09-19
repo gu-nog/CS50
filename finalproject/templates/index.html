@@ -3,5 +3,36 @@
     Homepage
 {% endblock %}
 {% block body %}
-    {{ content }}
+    <div class="top-space">
+        <div class="container">
+            <div class="row row-col-3">
+                <div class="col-md-3 card mx-auto">
+                    <img src="https://img.freepik.com/fotos-gratis/grupo-de-tres-jovens-iniciantes-bonitos-sentado-no-espaco-de-coworking-leve-falando-sobre-o-projeto-futuro-olhando-atraves-de-exemplos-de-design-no-tablet-digital-amigos-sorrindo-conversando-sobre-trabalho_176420-8284.jpg?w=1380&t=st=1663548276~exp=1663548876~hmac=711a2eb2113b479261fa3e65fc7ba1c7fe4bd76105e2975c5542fd2212e005c3" 
+                        class="card-img-top" alt="people showing something on tablet">
+                    <div class="card-body">
+                    <h5 class="card-title">My log</h5>
+                    <a href="/log/see" class="btn btn-primary">See</a>
+                    </div>
+                </div>
+                <div class="col-md-3 card mx-auto">
+                    <img src="https://img.freepik.com/fotos-gratis/homem-afetuoso-trabalhando-em-seu-computador_329181-10275.jpg?w=1380&t=st=1663548211~exp=1663548811~hmac=a93c501faa4858d704a55c2cdc912ac52b8e9310efcd529453c05eda709e3a1d" 
+                        class="card-img-top" alt="person writting something new on computer">
+                    <div class="card-body">
+                    <h5 class="card-title">Log more activities</h5>
+                    <a href="/log/add" class="btn btn-primary">Add</a>
+                    </div>
+                </div>
+                <div class="card col-md-3 mx-auto">
+                    <div class="img-card">
+                        <img src="https://as2.ftcdn.net/v2/jpg/03/09/00/45/1000_F_309004513_lsG2QNVYQKjRfDhNjGz5iX656NYIAESl.jpg" 
+                        class="card-img-top" alt="person looking to computer">
+                    </div>
+                    <div class="card-body">
+                    <h5 class="card-title">See someone's log</h5>
+                    <a href="/log/search" class="btn btn-primary">Search</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}

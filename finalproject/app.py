@@ -1,6 +1,6 @@
-from flask import Flask, render_template, request, redirect, session
+from flask import Flask, render_template, request, redirect, session, escape
 from flask_session import Session
-from database import delete_user, emailused, nameused, adduser, verifyuser
+from database import add_activity, delete_user, emailused, nameused, adduser, verifyuser
 
 app = Flask(__name__)
 app.config["SESSION_PERMANENT"] = True
@@ -16,7 +16,7 @@ def authenticated():
 def index():
     if not authenticated():
         return redirect('/login')
-    return render_template('index.html', content=session['user_id'])
+    return render_template('index.html')
 
 @app.route('/logout')
 def logout():
@@ -130,6 +130,88 @@ def delete_account():
         session.clear()
         return redirect('/signup')
     return redirect('/')
+
+@app.route('/log/see')
+def see_log():
+    """The user can see his log here via GET"""
+    if not authenticated():
+        return redirect('/login')
+    return render_template('')
+
+@app.route('/log/search')
+def search_log():
+    """Here the user can insert an username and if its profile is public, see it"""
+    return render_template('')
+
+@app.route('/log/add', methods=['post', 'get'])
+def add_log():
+    """The user can add an activity to log"""
+    try:
+        errors = {'title': '', 'activity_type': '', 'visibility': '', 'description': '', 'notes': '',
+                'date': ''}
+        if not authenticated():
+            return redirect('/login')
+        if request.method == 'GET':
+            return render_template('addlog.html', errors=errors)
+        else:
+            title = request.form.get('title')
+            activity_type = request.form.get('type')
+            visibility = request.form.get('visibility')
+            description = request.form.get('description')
+            notes = request.form.get('notes')
+            publicnotes = request.form.get('publicnotes') == 'public'
+            date = request.form.get('date')  # YYYY-MM-DD
+
+            # Title not empty and shorter than 100 chars
+            if title == '':
+                errors['title'] = 'Please, provide a title'
+            elif len(title) > 100:
+                errors['title'] = 'Please, provide a title with less than 100 characters'
+
+            # Type selected and valid
+            if activity_type == '--type--':
+                errors['activity_type'] = 'Please, provide the type'
+            elif not activity_type in ['course', 'book', 'contest', 'project']:
+                errors['activity_type'] = 'Invalid type'
+
+            # visibility valid
+            if not visibility in ['private', 'public']:
+                errors['visibility'] = 'Invalid visibility'
+
+            # Description not empty and shorter than 500 chars
+            if description == '':
+                errors['description'] = 'Please, provide the description'
+            elif len(description) > 750:
+                errors['description'] = 'Please, write a description with less than 750 characters'
+
+            # Notes shorter than 5000 chars
+            if len(notes) > 5000:
+                errors['notes'] = 'Please, only use 5000 characters to take notes'
+
+            # Valid date            
+            try:
+                year = int(date[:4])
+                month = int(date[5:7])
+                day = int(date[-2:])
+            except:
+                errors['date'] = 'Please put an valid date'
+
+            if errors == {'title': '', 'activity_type': '', 'visibility': '', 'description': '', 'notes': '',
+                'date': ''}:
+                add_activity(title, activity_type, visibility, description, notes, publicnotes, 
+                             year, month, day, session['user_id'])
+                return render_template('addlog.html', errors=errors, added=True)
+            else:
+                return render_template('addlog.html', errors=errors)
+    except:
+        return render_template('addlog.html', errors=errors, server_error=True)
+
+@app.route('/log/edit')
+def edit_log():
+    """User can edit a saved activity"""
+    if not authenticated():
+        return redirect('/login')
+    return render_template('')
 
 if __name__ == '__main__':
     app.config['TEMPLATES_AUTO_RELOAD'] = True

@@ -6,6 +6,30 @@ form.account-form {
     margin-top: 20%;
 }
 
+.form-with-error .form-text {
+    color: red;
+}
+
 form.account-form .form-text {
     color: red
+}
+
+.card-img-top {
+    width: 100%;
+    height: 100%;
+    margin: auto;
+}
+
+.img-card {
+    width: 100%;
+    height: 100%;
+}
+
+.top-space {
+    padding-top: 15%;
+}
+
+.vspace-5 {
+    padding-top: 5%;
+    padding-bottom: 5%;
 }

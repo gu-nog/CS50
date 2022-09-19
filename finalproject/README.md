@@ -4,15 +4,15 @@
 Vídeo: Skill log, Gustavo Nogueira Mendes, Belo Horizonte, Brazil and any other details<br>
 Explain what each file and part of my code does<br>
 What will your software do? Will permit any user to share and log what he is learning and also:
-- make notes and updload certificates of courses; 
-- books; 
+- make notes;
+- books;
 - contests;
 - projects(private or public - explain the decisions);
 - save public and private notes;
-- create quizzes to remember; 
+- create quizzes to remember;
 - private or public profile;
 How will it be executed? via website in Flask<br>
-What new skills will you need to acquire? save files on server, host my flask application online, use databases without cs50 library and other things I'll discover
+What new skills will you need to acquire? host my flask application online, use databases without cs50 library and other things I'll discover
 
 ## Activities:
 [x] - basic template and application structure
@@ -41,6 +41,9 @@ Is my application default template implemented using jinja template pattern
 ## signup.html:
 - GET: returns a form page to register(name, email, password, confirmation password and selector private or public)
 - POST: verify name is not empty, email is not empty and have @ and ., password have len between 4-20 chars, confirmation password must match and be providaded and selector must have a valid value, if everything is ok, add to database the new user
+
+# index.html:
+- GET: return an list of choices to what the user can do after logged in
 
 ## Styles.css:
 - some basic styles linked to basic template
