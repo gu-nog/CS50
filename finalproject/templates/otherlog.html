@@ -1,0 +1,68 @@
+{% extends 'basictemplate.html' %}
+{% block links %}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Reem+Kufi+Fun:wght@500&family=Roboto:wght@500&display=swap" rel="stylesheet">
+{% endblock %}
+{% block title %}
+    Other log
+{% endblock %}
+{% block body %}
+    <div class="container vspace-5 backgroud-gray">
+        {% for activity in range_log_len %}
+            {% if activity > 0 %}
+                {% if log[activity][1] == 'course' %}
+                    <div style="border-color: rgb(136, 136, 136);" class="dotted-line"></div>
+                {% elif log[activity][1] == 'book' %}
+                    <div style="border-color: rgb(0, 195, 255);" class="dotted-line"></div>
+                {% elif log[activity][1] == 'contest' %}
+                    <div style="border-color: green;" class="dotted-line"></div>
+                {% elif log[activity][1] == 'project' %}
+                    <div style="border-color: rgb(144, 66, 218);" class="dotted-line"></div>
+                {% endif %}
+            {% endif %}
+            <div class="activity-card">
+                <div class="activity-content{% if activity % 2 == 0 %}-left{% else %}-right{% endif %} {{ colors[log[activity][1]] }}-border">
+                    {% if activity % 2 == 1 %}
+                        <div class="activity-icon">
+                            <img src="../static/{{ log[activity][1] }}.svg" alt="{{ log[activity][1] }} icon" width="65px" height="65px">
+                        </div>
+                        <div class="activity-date">
+                            <span>
+                                {{ log[activity][8] }}/{{ log[activity][7] }}/{{ log[activity][6] }}
+                            </span>
+                        </div>
+                    {% endif %}
+                    <div class="activity-title">
+                        <span>
+                            {{ log[activity][0] }}
+                        </span>
+                    </div>
+                    <div class="activity-description">
+                        <span>
+                            {{ log[activity][3] }}
+                        </span>
+                    </div>
+                    {% if activity % 2 == 0 %}
+                        <a class="btn btn-light edit" style="right: 190px;" href="/more?id={{ log[activity][9] }}">more</a>
+                    {% endif %}
+                    {% if activity % 2 == 1 %}
+                        <a class="btn btn-light edit" style="right: 5px;" href="/more?id={{ log[activity][9] }}">more</a>
+                    {% endif %}
+                    {% if activity % 2 == 0 %}
+                        <div class="activity-right">
+                            <div class="activity-date">
+                                <span>
+                                    {{ log[activity][8] }}/{{ log[activity][7] }}/{{ log[activity][6] }}
+                                </span>
+                            </div>
+                            <div class="activity-icon">
+                                <img src="../static/{{ log[activity][1] }}.svg" alt="{{ log[activity][1] }} icon" width="65px" height="65px">
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

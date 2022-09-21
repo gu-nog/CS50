@@ -42,6 +42,24 @@ Is my application default template implemented using jinja template pattern
 - GET: returns a form page to register(name, email, password, confirmation password and selector private or public)
 - POST: verify name is not empty, email is not empty and have @ and ., password have len between 4-20 chars, confirmation password must match and be providaded and selector must have a valid value, if everything is ok, add to database the new user
 
+## log.html:
+- Via GET return the user's log
+
+## Searchform.html:
+- Via GET return a form with user field to search for someone's else log
+
+## Otherlog.html:
+- Via GET return the form of a user by his name
+
+## Addlog.html:
+- return a form to add an activity to your log and in POST can also contain an card of sucess or error messages
+
+## edit.html:
+- return a form to edit an activity of your log and in POST can also contain an card of sucess or error messages
+
+## more.html:
+- return an complete page with full title, description and notes of someone's activity
+
 # index.html:
 - GET: return an list of choices to what the user can do after logged in
 

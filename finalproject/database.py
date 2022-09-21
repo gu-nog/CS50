@@ -23,6 +23,7 @@ def run_query(query, params=[]):
 def delete_user(id):
     try:
         run_query('DELETE FROM users WHERE id = ?', [id])
+        run_query('DELETE FROM activities WHERE user_id = ?', [id])
         return True
     except:
         return False
@@ -47,6 +48,13 @@ def verifyuser(email, password):
         return -1
     except:
         return -1
+
+def namepublic(name):
+    try:
+        search = run_query('SELECT * FROM users WHERE name = ? AND private = 0', [name]).fetchall()
+        return len(search) != 0
+    except:
+        return True
 
 def nameused(name):
     try:
@@ -74,3 +82,29 @@ def add_activity(title, activity_type, visibility, description, notes, publicnot
         return True
     except:
         return False
+
+def get_activities(id):
+    """title, type, private, description, notes, private_notes, year, month, day, id tuple"""
+    return run_query('SELECT title, type, private, description, notes, private_notes, year, month, day, id FROM activities ' + 
+                     'WHERE user_id = ? ORDER BY year DESC, month DESC, day DESC', [id]).fetchall()
+
+def get_activity(id, user_id):
+    """title, type, private, description, notes, private_notes, year, month, day of one activity"""
+    return run_query('SELECT title, type, private, description, notes, private_notes, year, month, day ' +
+                     'FROM activities WHERE user_id = ? AND id = ?', [user_id, id]).fetchall()
+
+def edit_activity(title, activity_type, visibility, description, notes, publicnotes, year, month, day, user_id, id):
+    """receive title, activity_type, visibility, description, notes, publicnotes, year, month, day, 
+    session['user_id'], session['editing']"""
+    new_data = 'title = ?, type = ?, private = ?, description = ?, notes = ?, private_notes = ?, year = ?, month = ?, day = ?'
+    return run_query(f'UPDATE activities SET {new_data} WHERE user_id = ? AND id = ?', 
+        [title, activity_type, visibility == 'private', description, notes, publicnotes == False, year, month, day, user_id, id])
+
+def get_name(id):
+    return run_query(f'SELECT name FROM users WHERE id = {id}').fetchall()[0][0]
+
+def get_id(name):
+    return run_query('SELECT id FROM users WHERE name = ?', [name]).fetchall()[0][0]
+
+def more_about(id):
+    return run_query('SELECT title, description, notes, private_notes FROM activities WHERE id = ? AND private = 0', [id]).fetchall()

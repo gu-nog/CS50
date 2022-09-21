@@ -1,11 +1,17 @@
+from distutils.log import error
+from typing import final
 from flask import Flask, render_template, request, redirect, session, escape
 from flask_session import Session
-from database import add_activity, delete_user, emailused, nameused, adduser, verifyuser
+from database import get_id, get_name, add_activity, delete_user, edit_activity, emailused, get_activities, get_activity, more_about, namepublic, nameused, adduser, verifyuser
 
 app = Flask(__name__)
 app.config["SESSION_PERMANENT"] = True
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
+
+base_url = 'http://127.0.0.1:5000/'
+
+colors = {"course": 'black', 'book': 'blue', 'contest': 'green', 'project': 'blueviolet'}
 
 def authenticated():
     if 'user_id' in session.keys():
@@ -14,9 +20,10 @@ def authenticated():
 
 @app.route('/')
 def index():
+    global base_url
     if not authenticated():
         return redirect('/login')
-    return render_template('index.html')
+    return render_template('index.html', name=get_name(session['user_id']), base_url = base_url)
 
 @app.route('/logout')
 def logout():
@@ -55,6 +62,7 @@ def login():
                 user_id = verifyuser(email, password)
                 if user_id != -1:
                     session['user_id'] = user_id
+                    session['editing'] = None
                     return redirect('/')
                 else:
                     errors['email'] = 'wrong password/email'
@@ -134,14 +142,28 @@ def delete_account():
 @app.route('/log/see')
 def see_log():
     """The user can see his log here via GET"""
+    global colors
     if not authenticated():
         return redirect('/login')
-    return render_template('')
+    log = get_activities(session['user_id'])
+    return render_template('log.html', range_log_len=range(len(log)), log=log, colors=colors)
 
 @app.route('/log/search')
 def search_log():
     """Here the user can insert an username and if its profile is public, see it"""
-    return render_template('')
+    if not 'name' in request.args:
+        return render_template('searchform.html', error=False, name=None)
+    else:
+        if not namepublic(request.args.get('name')):
+            return render_template('searchform.html', error=True, name=request.args.get('name'))
+        else:
+            global colors
+            log = get_activities(get_id(request.args.get('name')))
+            final_log = []
+            for activity in log:
+                if activity[2] == False:
+                    final_log.append(activity)
+            return render_template('otherlog.html', range_log_len=range(len(final_log)), log=final_log, colors=colors)
 
 @app.route('/log/add', methods=['post', 'get'])
 def add_log():
@@ -206,12 +228,117 @@ def add_log():
     except:
         return render_template('addlog.html', errors=errors, server_error=True)
 
-@app.route('/log/edit')
+@app.route('/edit', methods=['post', 'get'])
 def edit_log():
     """User can edit a saved activity"""
-    if not authenticated():
-        return redirect('/login')
-    return render_template('')
+    errors = {'title': '', 'activity_type': '', 'visibility': '', 'description': '', 'notes': '',
+                'date': ''}
+    try:
+        if not authenticated():
+            return redirect('/login')
+        if request.method == 'GET':
+            data = get_activity(request.args.get('id'), session['user_id'])
+            session['editing'] = request.args.get('id')
+            if len(data) == 0:
+                return redirect('/log/see')
+            final_data = list(data[0])
+            if len(str(final_data[-1])) == 1:
+                final_data[-1] = '0' + str(final_data[-1])
+            else:
+                final_data[-1] = str(final_data[-1])
+            if len(str(final_data[-2])) == 1:
+                final_data[-2] = '0' + str(final_data[-2])
+            else:
+                final_data[-2] = str(final_data[-2])
+            return render_template('edit.html', errors=errors, data=final_data)
+        else:
+            title = request.form.get('title')
+            activity_type = request.form.get('type')
+            visibility = request.form.get('visibility')
+            description = request.form.get('description')
+            notes = request.form.get('notes')
+            publicnotes = request.form.get('publicnotes') == 'public'
+            date = request.form.get('date')  # YYYY-MM-DD
+
+            # Title not empty and shorter than 100 chars
+            if title == '':
+                errors['title'] = 'Please, provide a title'
+            elif len(title) > 100:
+                errors['title'] = 'Please, provide a title with less than 100 characters'
+
+            # Type selected and valid
+            if activity_type == '--type--':
+                errors['activity_type'] = 'Please, provide the type'
+            elif not activity_type in ['course', 'book', 'contest', 'project']:
+                errors['activity_type'] = 'Invalid type'
+
+            # visibility valid
+            if not visibility in ['private', 'public']:
+                errors['visibility'] = 'Invalid visibility'
+
+            # Description not empty and shorter than 500 chars
+            if description == '':
+                errors['description'] = 'Please, provide the description'
+            elif len(description) > 750:
+                errors['description'] = 'Please, write a description with less than 750 characters'
+
+            # Notes shorter than 5000 chars
+            if len(notes) > 5000:
+                errors['notes'] = 'Please, only use 5000 characters to take notes'
+
+            # Valid date            
+            try:
+                year = int(date[:4])
+                month = int(date[5:7])
+                day = int(date[-2:])
+            except:
+                errors['date'] = 'Please put an valid date'
+            
+            if errors == {'title': '', 'activity_type': '', 'visibility': '', 'description': '', 'notes': '',
+                'date': ''}:
+                edit_activity(title, activity_type, visibility, description, notes, publicnotes, 
+                             year, month, day, session['user_id'], session['editing'])
+                data = get_activity(session['editing'], session['user_id'])
+                final_data = list(data[0])
+                if len(str(final_data[-1])) == 1:
+                    final_data[-1] = '0' + str(final_data[-1])
+                else:
+                    final_data[-1] = str(final_data[-1])
+                if len(str(final_data[-2])) == 1:
+                    final_data[-2] = '0' + str(final_data[-2])
+                else:
+                    final_data[-2] = str(final_data[-2])
+                return render_template('edit.html', errors=errors, added=True, data=final_data)
+            else:
+                if len(str(month)) == 1:
+                    month = '0' + str(month)
+                else:
+                    month = str(month)
+                if (len(str(day))) == 1:
+                    day = '0' + str(day)
+                else:
+                    day = str(day)
+                return render_template('edit.html', errors=errors, 
+                                        data=[title, activity_type, visibility=='private', description, notes, publicnotes == False, year, month, day])
+    except:
+        return render_template('edit.html', errors=errors, server_error=True, data=None)
+
+@app.route('/more')
+def more():
+    if not 'id' in request.args:
+        return redirect('/')
+    else:
+        try:
+            origin = request.environ['HTTP_REFERER']
+            informations = more_about(request.args.get('id'))[0]
+            title = informations[0]
+            description = informations[1]
+            notes = informations[2]
+            if informations[3] == True:
+                notes = 'This notes is private!'
+            return render_template('more.html', origin=origin, title=title, description=description, notes=notes)
+        except:
+            return redirect('/')
 
 if __name__ == '__main__':
     app.config['TEMPLATES_AUTO_RELOAD'] = True

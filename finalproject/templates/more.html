@@ -1,0 +1,17 @@
+{% extends 'basictemplate.html' %}
+{% block title %}
+    More info
+{% endblock %}
+{% block body %}
+    <div class="container vspace-5">
+        <h1 class="text-center">{{ title }}</h1>
+        <h5 class="text-center">{{ description }}</h5>
+        <h3>Notes:</h3>
+        <span style="display:block;">
+            {{ notes }}
+        </span>
+        <a class="btn btn-primary" href="{{origin}}">
+            return
+        </a>
+    </div>
+{% endblock %}

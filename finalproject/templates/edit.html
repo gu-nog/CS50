@@ -1,0 +1,111 @@
+{% extends 'basictemplate.html' %}
+{% block title %}
+    Edit a log
+{% endblock %}
+{% block body %}
+    <h1 class="text-center">
+        Edit Activity
+    </h1>
+    {% if server_error == True %}
+        <h2 class="text-center">
+            Server error :(
+        </h2>
+    {% endif %}
+    <div class="container vspace-5">
+        {% if added == True %}
+            <div role="alert" class="alert alert-success">
+                Activity edited sucessfully!
+            </div>
+        {% endif %}
+        <form action="/edit" method="post" class="form-with-error">
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="title">Title</label>
+                    <input value="{% if data != None %}{{data[0]}}{% endif %}" type="text" name="title" id="title" autofocus autocomplete="off" autocapitalize="words" placeholder="Activity title" class="form-control">
+                    <div class="form-text">{{ errors['title'] }}</div>
+                </div>
+                <div class="form-group col-md-3">
+                    <label for="type">Type</label>
+                    <select class="form-control" name="type" id="type">
+                        <option disabled value="--type--">
+                            --type--
+                        </option>
+                        {% if data != None and data[1] == 'course' %}
+                            <option selected value="course">Course</option>
+                        {% else %}
+                            <option value="course">Course</option>
+                        {% endif %}
+                        {% if data != None and data[1] == 'book' %}
+                            <option selected value="book">Book</option>
+                        {% else %}
+                            <option value="book">Book</option>
+                        {% endif %}
+                        {% if data != None and data[1] == 'contest' %}
+                            <option selected value="contest">Contest</option>
+                        {% else %}
+                            <option value="contest">Contest</option>
+                        {% endif %}
+                        {% if data != None and data[1] == 'project' %}
+                            <option selected value="project">Project</option>
+                        {% else %}
+                            <option value="project">Project</option>
+                        {% endif %}
+                    </select>
+                    <div class="form-text">{{ errors['activity_type'] }}</div>
+                </div>
+                <div class="form-group col-md-3">
+                    <label for="visibility">Visibility</label>
+                    <select name="visibility" class="form-control">
+                        {% if data != None and data[2] == True %}
+                            <option value="private">
+                                private activity
+                            </option>
+                        {% else %}
+                            <option value="public">
+                                public activity
+                            </option>
+                        {% endif %}
+                        {% if data != None and data[2] == False %}
+                            <option value="private">
+                                private activity
+                            </option>
+                        {% else %}
+                            <option value="public">
+                                public activity
+                            </option>
+                        {% endif %}
+                    </select>
+                    <div class="form-text">{{ errors['visibility'] }}</div>
+                </div>
+            </div>
+            <div class="form-group col-md-12">
+                <label for="date">Date</label>
+                {% if data != None %}
+                    <input value="{{data[-3]}}-{{data[-2]}}-{{data[-1]}}" name="date" id="date" placeholder="Date" class="form-control" type="date"></input>
+                {% else %}
+                    <input name="date" id="date" placeholder="Date" class="form-control" type="date"></input>
+                {% endif %}
+                <div class="form-text">{{ errors['date'] }}</div>
+            </div>
+            <div class="form-group col-md-12">
+                <label for="description">Description</label>
+                <textarea name="description" id="description" rows="5" autocomplete="off" placeholder="Description" class="form-control">{% if data != None %}{{data[3]}}{% endif %}</textarea>
+                <div class="form-text">{{ errors['description'] }}</div>
+            </div>
+            <div class="form-group col-md-12">
+                <label for="notes">Notes</label>
+                <div class="form-check">
+                    {% if data != None and data[5] == True %}
+                        <input class="form-check-input" type="checkbox" value="public" id="publicnotes" name="publicnotes" />
+                    {% else %}
+                        <input checked class="form-check-input" type="checkbox" value="public" id="publicnotes" name="publicnotes" />
+                    {% endif %}
+                    <label class="form-check-label" for="publicnotes">Public notes</label>
+                </div>
+                <textarea name="notes" id="notes" rows="10" autocomplete="off" placeholder="Notes" class="form-control">{% if data != None %}{{data[4]}}{% endif %}</textarea>
+                <div class="form-text">{{ errors['notes'] }}</div>
+            </div>
+            <input type="submit" class="btn btn-primary">
+        </form>
+    </div>
+{% endblock %}
