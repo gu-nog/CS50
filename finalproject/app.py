@@ -9,7 +9,7 @@ app.config["SESSION_PERMANENT"] = True
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
-base_url = 'http://127.0.0.1:5000/'
+base_url = 'https://skill-log.herokuapp.com/'
 
 colors = {"course": 'black', 'book': 'blue', 'contest': 'green', 'project': 'blueviolet'}
 

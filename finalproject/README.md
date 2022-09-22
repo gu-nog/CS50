@@ -1,5 +1,5 @@
 # Skill log
-#### Video Demo:  <URL HERE>
+#### Video Demo:  https://youtu.be/_-2rCksgwa8
 #### Description:
 Vídeo: Skill log, Gustavo Nogueira Mendes, Belo Horizonte, Brazil and any other details<br>
 Explain what each file and part of my code does<br>
